@@ -1,0 +1,16 @@
+{
+    "CN": "hashiporx",
+    "key": {
+      "algo": "rsa",
+      "size": 2048
+    },
+    "names": [
+      {
+        "C": "JP",
+        "L": "Tokyo",
+        "O": "hashiporx",
+        "OU": "AA",
+        "ST": "ST"
+      }
+    ]
+  }

@@ -1,0 +1,40 @@
+#Define Variables for Platform
+vsphere_user           = "administrator@vsphere.local" #vsphereのユーザー名
+vsphere_password       = "xxxxxxxxxx"                  #vsphereのパスワード
+vsphere_vc_server      = "vc.vsphere.local"              #vCenterのFQDN/IPアドレス
+vsphere_datacenter     = "datacenter"                         #vsphereのデータセンター
+vsphere_datastore      = "datastore"                 #vsphereのデータストア
+vsphere_cluster        = "cluster"                    #vsphereのクラスター
+vsphere_network_1      = "VM Network"                  #vsphereのネットワーク
+vsphere_template_name = "template_centos7.9.2009"      #プロビジョニングするテンプレート(centos7.9.2009)
+vsphere_resource_pool  = "rg"                         #ResourcePool名
+
+# OS Template User / Password  
+template_user          = "root"   
+template_user_password = "xxxxxxxxxxx"  
+
+#Network param
+pram_domain_name      = "domain.local"              #仮想マシンが参加するドメイン名
+pram_ipv4_subnet      = 24                          #仮想マシンのネットワークのサブネット
+pram_ipv4_gateway     = "192.168.100.254"               #仮想マシンのネットワークのデフォルトゲートウェイ
+pram_dns_server       = "192.168.100.253"           #仮想マシンが参照するDNSサーバー
+pram_ipv4_class       = "192.168.100."                #利用できるクラスCの値を指定
+pram_ipv4_host_serv   = "11"                       #プロビジョニングする仮想マシンに割り当てるIPアドレスの最初の値
+pram_ipv4_host_client = "14"   
+pram_ipv4_host_va     = "10"                          #Vaultノード用のIP
+##IPアドレスが固定環境の値。 pram_ipv4_host に指定した値から連続してIPアドレスを割り振る
+
+#Define Variables for Virtual Machines
+prov_vm_num_serv      = 3                           #プロビジョニングする仮想マシンの数(server)
+prov_vm_num_client    = 3                           #プロビジョニングする仮想マシンの数(client)
+prov_vmname_prefix_s  = "hashiporx-s-"               #プロビジョニングする仮想マシンの接頭語
+prov_vmname_prefix_c  = "hashiporx-c-"               #プロビジョニングする仮想マシンの接頭語
+prov_cpu_num          = 8                           #プロビジョニングする仮想マシンのCPUの数
+prov_mem_num          = 16384                       #プロビジョニングする仮想マシンのメモリのMB
+
+#Define Variables for Vault node
+prov_vm_num_va           = 1                           #プロビジョニングする仮想マシンの数
+prov_vmname_prefix_va  = "hashiporx-va-"               #プロビジョニングする仮想マシンの接頭語
+prov_cpu_num_va          = 4                           #プロビジョニングする仮想マシンのCPUの数
+prov_mem_num_va          = 4096                       #プロビジョニングする仮想マシンのメモリのMB
+
