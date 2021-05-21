@@ -1,4 +1,4 @@
-job "mysql-5.7.33" {
+job "demo-mysql" {
   datacenters = ["dc1"]
 
   update {
@@ -6,7 +6,7 @@ job "mysql-5.7.33" {
     max_parallel = 1
   }
 
-  group "mysql" {
+  group "demo-mysql" {
     restart {
       interval = "5m"
       attempts = 10
@@ -20,12 +20,16 @@ job "mysql-5.7.33" {
       }
     }
 
-   task "mysql" {
+   task "demo-mysql" {
       driver = "docker"
 
       config {
         image = "mysql:5.7.33"
         ports = ["mysql"]
+        volumes = [
+          "name=demo-mysql,size=20,repl=3/:/var/lib/mysql",
+        ]
+        volume_driver = "pxd"
       }
 
       env {
@@ -33,7 +37,7 @@ job "mysql-5.7.33" {
       }
 
       service {
-        name = "mysql5733"
+        name = "demo-mysql"
         tags = ["global"]
         port = "mysql"
 
