@@ -181,4 +181,89 @@ sda               8:0    0   120G  0 disk
 sdb               8:16   0   100G  0 disk
 ```
 
+#### Lighthouseのセットアップ  
+PortworxのGUIであるLighthouseをセットアップします。
+jobを実行します。
+
+```
+cd ~/script
+nomad job run px-lighthouse.nomad
+```
+
+#### GUIのへのアクセス
+今回、Lighthouse任意のポートでhttpポートを受け付けるようにNomad上で構成していますので、アクセスに必要なIPとPortを確認します。
+
+
+##### Nomadから確認
+Nomad サーバー上のCLIから確認します。 
+Job StatusからAllocationsを確認し、Allocationsのステータスを確認します。  
+
+- allocation idの確認
+```
+nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse1" and .ClientStatus == "running" ) | .ID'
+```
+
+- IPとPortの確認  
+```
+nomad alloc status -json {allocation id} | jq .Resources.Networks[0]
+```
+
+- 1line command
+  - ip 
+`nomad alloc status -json $(nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse1" and .ClientStatus == "running" ) | .ID') | jq -r .Resources.Networks[0].IP`
+
+  - port
+`nomad alloc status -json $(nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse1" and .ClientStatus == "running" ) | .ID') | jq -r .Resources.Networks[0].DynamicPorts[0].Value`
+
+
+##### consulからの確認
+
+`dig lighthouse-http.service.consul SRV`
+
+```
+# dig lighthouse-http.service.consul SRV
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.5 <<>> lighthouse-http.service.consul SRV
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 47422
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;lighthouse-http.service.consul.        IN      SRV
+
+;; ANSWER SECTION:
+lighthouse-http.service.consul. 0 IN    SRV     1 1 25089 0a2a7552.addr.dc1.consul. ##← 25089 がport
+
+;; ADDITIONAL SECTION:
+0a2a7552.addr.dc1.consul. 0     IN      A       10.42.117.82 ##← IP
+hashiporx-s-001.node.dc1.consul. 0 IN   TXT     "consul-network-segment="
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: 金  5月 21 12:57:29 JST 2021
+;; MSG SIZE  rcvd: 176
+```
+
+#### lighthouseへのPortworx Clusterの登録  
+取得したIPとportに**http**でアクセスし、 admin / Password1 でログインします。  
+
+![](img/2021-05-21_13h05_37.png)  
+
+**Add Cluster** をクリックします。  
+
+![](img/2021-05-21_13h07_38.png)
+
+*Cluster Endpoint* にどれか1台のPortworxのノードとなっているIPを入力し、**Verify** をクリックします。
+*cluster name*と*UUID*に値がはいるので、**Attach** します。  
+
+![](img/2021-05-21_13h10_40.png)
+
+Portworx クラスターが登録され、ステータスが確認できます。
+
+
+
+
 
