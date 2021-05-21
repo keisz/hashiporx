@@ -5,6 +5,10 @@ set -e
 chmod +x ~/script/consul-cert-var.sh
 source ~/script/consul-cert-var.sh
 
+export NIC_NAME=$(nmcli -t con |cut -d ":" -f 1)
+export DC_NAME="dc1"
+export IP_ADDRESS=$(ip -f inet -o addr show $NIC_NAME|cut -d\  -f 7 | cut -d/ -f 1)
+
 ## vault pram
 VAULT_TOKEN=$(vault login -tls-skip-verify -method=userpass username=user password=password -format=json | jq -r .auth.client_token)
 

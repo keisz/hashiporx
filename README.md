@@ -80,7 +80,6 @@ terraform apply
 ```
 cd script/vault/
 ./vault_init.sh
-./vault.sh
 ```
 
 `~/vaultkey` が作成されます。ここにunseal key や root tokenが保存されています。  
@@ -91,7 +90,6 @@ cd script/vault/
 
 ```
 cd script/
-./consul-cert.sh
 ./consul.sh
 ```  
 
@@ -154,7 +152,6 @@ cd ~/script
 
 ```
 cd ~/script
-./portworx.sh
 nomad job run portworx-system.nomad
 ```
 
@@ -200,7 +197,7 @@ Job StatusからAllocationsを確認し、Allocationsのステータスを確認
 
 - allocation idの確認
 ```
-nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse1" and .ClientStatus == "running" ) | .ID'
+nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse" and .ClientStatus == "running" ) | .ID'
 ```
 
 - IPとPortの確認  
@@ -210,10 +207,10 @@ nomad alloc status -json {allocation id} | jq .Resources.Networks[0]
 
 - 1line command
   - ip 
-`nomad alloc status -json $(nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse1" and .ClientStatus == "running" ) | .ID') | jq -r .Resources.Networks[0].IP`
+`nomad alloc status -json $(nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse" and .ClientStatus == "running" ) | .ID') | jq -r .Resources.Networks[0].IP`
 
   - port
-`nomad alloc status -json $(nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse1" and .ClientStatus == "running" ) | .ID') | jq -r .Resources.Networks[0].DynamicPorts[0].Value`
+`nomad alloc status -json $(nomad alloc status -json | jq -r '.[] | select(.JobID == "lighthouse" and .ClientStatus == "running" ) | .ID') | jq -r .Resources.Networks[0].DynamicPorts[0].Value`
 
 
 ##### consulからの確認

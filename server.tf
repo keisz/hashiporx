@@ -113,7 +113,7 @@ resource "vsphere_virtual_machine" "vm_server" {
       "firewall-cmd --reload",
       # conf consul
       "mkdir -p /etc/consul.d/cert/",
-      "chmod +x ~/consul_sample/*.sh",
+      #"chmod +x ~/consul_sample/*.sh",
       "mv /etc/consul.d/consul.hcl /etc/consul.d/consul.hcl.org",
       # conf nomad
       "mv /etc/nomad.d/nomad.hcl /etc/nomad.d/nomad.hcl.org",
@@ -137,11 +137,6 @@ resource "vsphere_virtual_machine" "vm_server" {
   provisioner "file" {
       source      = "file/conf/nomad/nomad-server.hcl"
       destination = "/etc/nomad.d/nomad.hcl"
-  }
-
-  provisioner "file" {
-      content     = "${data.template_file.resolv_dnsmasq[count.index].rendered}"
-      destination = "/etc/resolv.dnsmasq.conf"
   }
 
 }
